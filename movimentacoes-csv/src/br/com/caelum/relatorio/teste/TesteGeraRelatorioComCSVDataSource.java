@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
+import br.com.caelum.relatorio.GeradorRelatorio;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JRExporter;
 import net.sf.jasperreports.engine.JRExporterParameter;
@@ -28,12 +29,8 @@ public class TesteGeraRelatorioComCSVDataSource {
 		dataSource.setColumnNames(new String[]{"id","data","descricao","tipoMovimentacao","valor"});
 		dataSource.setDatePattern("yyyy-MM-dd");
 		
-		JasperPrint print = JasperFillManager.fillReport("movimentacoes.jasper", parametros, dataSource);
-
-		JRExporter exporter = new JRPdfExporter();
-		exporter.setParameter(JRExporterParameter.JASPER_PRINT, print);
-		exporter.setParameter(JRExporterParameter.OUTPUT_STREAM, new FileOutputStream("movimentacoes.pdf"));
-		exporter.exportReport();
+		GeradorRelatorio geradorRelatorio = new GeradorRelatorio("movimentacoes.jasper", parametros, dataSource);
+		geradorRelatorio.geraPDFPara(new FileOutputStream("movimentacoes.pdf"));
 	}
 
 }

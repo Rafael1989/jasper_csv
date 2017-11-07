@@ -4,6 +4,7 @@ import java.io.OutputStream;
 import java.sql.Connection;
 import java.util.Map;
 
+import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JRExporter;
 import net.sf.jasperreports.engine.JRExporterParameter;
@@ -15,19 +16,19 @@ public class GeradorRelatorio {
 
 	private String nomeArquivo;
 	private Map<String, Object> params;
-	private Connection connection;
+	private JRDataSource dataSource;
 
-	public GeradorRelatorio(String nomeArquivo, Map<String, Object> params, Connection connection) {
+	public GeradorRelatorio(String nomeArquivo, Map<String, Object> params, JRDataSource dataSource) {
 		this.nomeArquivo = nomeArquivo;
 		this.params = params;
-		this.connection = connection;
+		this.dataSource = dataSource;
 	}
 
 	public void geraPDFPara(OutputStream outputStream) {
 		try {
 
 			JasperPrint jasperPrint = JasperFillManager.fillReport(this.nomeArquivo, this.params,
-					this.connection);
+					this.dataSource);
 
 			JRExporter exporter = new JRPdfExporter();
 			exporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
